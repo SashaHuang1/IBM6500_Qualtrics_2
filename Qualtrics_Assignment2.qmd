@@ -1,0 +1,205 @@
+---
+title: "Qualtrics Assignment #2 – Experimentation"
+author: "Yushan Huang"
+date: "September 30, 2026"
+format:
+  html:
+    toc: true
+    toc-depth: 2
+    number-sections: true
+    code-fold: false
+    self-contained: false
+    embed-resources: true
+---
+
+# Overview
+
+This report documents the modifications completed for Qualtrics Assignment #2 – Experimentation. The project was renamed **Social Media Opinion Leader-Experimental Design**. The work focused on (1) implementing a between-subjects experimental design using Randomizer and Branch functions, (2) improving Q2.2 so that social-media usage can be measured separately for each platform used by a participant, and (3) identifying three additional questionnaire improvements.
+
+The assignment instructions emphasize documenting the full survey flow and showing enough Qualtrics settings and screenshots to make the work gradeable. The report therefore includes screenshots of the relevant Qualtrics programming and preview results.
+
+# Experimental Design: Random Assignment
+
+## Research design
+
+The survey contains two advertisement conditions: **social_media_review** and **ads**. Participants should be exposed to only one of these two conditions and then continue to the same dependent-variable questions. This is implemented as a between-subjects design using random assignment.
+
+## Randomizer setup
+
+The Randomizer was inserted immediately after the existing participant `id` embedded-data assignment. It was configured to randomly present **1** of the available elements and to **Evenly Present Elements**.
+
+Two embedded-data conditions were created:
+
+- `Ad Type = reviewer`
+- `Ad Type = ads`
+
+### Survey flow: Randomizer
+
+![](images/01_survey_flow_randomizer.png){fig-cap="Survey Flow showing the participant ID and Randomizer with one randomly selected condition."}
+
+The Randomizer is set to present one condition at a time, which prevents a participant from receiving both advertisement treatments.
+
+## Branch setup
+
+Two Branch elements were then used to route participants according to the randomized `Ad Type` value.
+
+The first Branch checks:
+
+> `Ad Type` is equal to `reviewer`
+
+and contains the `social_media_review` block.
+
+The second Branch checks:
+
+> `Ad Type` is equal to `ads`
+
+and contains the `ads` block.
+
+The `DV`, `Purchasing Behavior`, and `Demographics` blocks remain outside the two branches so that participants in either experimental condition continue to the same later questions.
+
+### Survey flow: Branches
+
+![](images/02_survey_flow_branches.png){fig-cap="Survey Flow showing the two condition branches and their corresponding advertisement blocks."}
+
+### Survey flow: downstream blocks
+
+![](images/03_survey_flow_final.png){fig-cap="Survey Flow showing the advertisement branch followed by the common DV, Purchasing Behavior, and Demographics blocks."}
+
+## Verification in Preview
+
+The survey was tested in Preview mode to verify that the experimental routing works as intended. The expected behavior is that a participant sees only one of the two advertisement conditions before proceeding to the common downstream questions.
+
+# Improvement of Q2.2: Social Media Usage by Platform
+
+## Problem with the original Q2.2
+
+The original Q2.2 asked respondents to report the amount of time they spent on social media platforms as a whole. That format could not identify the usage rate for each individual platform.
+
+## Revised Q2.2: Select all platforms used
+
+The revised Q2.2 asks:
+
+> **Which of the following social media platforms do you use? Please select all that apply.**
+
+The response options are:
+
+- Facebook
+- Instagram
+- Twitter/X
+- Snapchat
+- Other
+
+The question is configured to **Allow multiple answers**, so respondents can identify all platforms they use rather than only one.
+
+## Follow-up matrix with Carry Forward
+
+A second question was added using a Matrix Table format:
+
+> **How much time do you spend on each of the following social media platforms per day?**
+
+The rows use **Carry Forward Statements** from Q2.2 and retain **Selected Choices**. This means that the follow-up matrix displays only the platforms selected by the respondent in Q2.2.
+
+The usage-rate response options are:
+
+- 1 hour or less per day
+- 1–2 hours per day
+- 3–4 hours per day
+- 4–5 hours per day
+- 5 or more hours per day
+
+### Carry Forward configuration
+
+![](images/04_q22_carry_forward_setup.png){fig-cap="Q2.2 follow-up Matrix Table using Carry Forward Statements from Q2.2 and Selected Choices."}
+
+## Preview verification
+
+A Preview test was conducted by selecting **Facebook** and **Instagram** in the platform-selection question. The follow-up matrix displayed only Facebook and Instagram, demonstrating that the Carry Forward function is working correctly.
+
+![](images/06_q22_preview_carry_forward.png){fig-cap="Preview showing the selected platforms carried forward into the usage-rate matrix."}
+
+# Three Additional Questionnaire Improvements
+
+The following three improvements are intended to improve clarity, response quality, and consistency without changing the underlying research purpose of the questionnaire.
+
+## Improvement 1: Clarify Q4.2 wording
+
+### Original
+
+> Please indicate the extent to which you would rely on the following to get recommendations from to purchase a product?
+
+### Revised
+
+> **Please indicate the extent to which you would rely on each of the following sources for product purchase recommendations.**
+
+### Why this is an improvement
+
+The revised wording is shorter and grammatically clearer. It explicitly identifies the items as **sources** and removes the confusing phrase “get recommendations from to purchase a product.” Clearer wording can reduce interpretation differences across respondents.
+
+**Screenshot:** `images/09_q42_revised.png`  
+_Save your revised Q4.2 screenshot with this exact filename._
+
+## Improvement 2: Clarify the Q4.2 response scale
+
+### Original scale
+
+The original scale used labels only for the endpoints, with the middle response options shown only as numbers:
+
+> 1 - A lot | 2 | 3 | 4 | 5 - Not at all
+
+### Revised scale
+
+Use explicit verbal anchors for every point:
+
+- 1 – A lot
+- 2 – Quite a bit
+- 3 – Somewhat
+- 4 – A little
+- 5 – Not at all
+
+### Why this is an improvement
+
+Labeling every response point provides a clearer interpretation of the scale and makes the meaning of the middle categories easier to understand.
+
+**Screenshot:** `images/10_q42_scale_revised.png`  
+_Save your updated Q4.2 scale screenshot with this exact filename._
+
+## Improvement 3: Clarify Q3.5 wording
+
+### Original
+
+> How often do you purchase a product or service that a social media opinion leader posted about? (Instagram, Facebook, Twitter etc...)
+
+### Revised
+
+> **How often do you purchase a product or service after seeing it recommended or promoted by a social media opinion leader?**
+
+### Why this is an improvement
+
+The revised wording makes the intended behavior more specific. “Posted about” can refer to many kinds of mentions, while “recommended or promoted” more directly describes the social-media influence being measured.
+
+**Screenshot:** `images/11_q35_revised.png`  
+_Save your revised Q3.5 screenshot with this exact filename._
+
+# Final Check
+
+Before submitting the assignment, verify the following:
+
+- The project name is **Social Media Opinion Leader-Experimental Design**.
+- The Randomizer is set to present **1** condition and **Evenly Present Elements** is enabled.
+- `Ad Type = reviewer` routes to `social_media_review`.
+- `Ad Type = ads` routes to `ads`.
+- `DV`, `Purchasing Behavior`, and `Demographics` remain outside the two advertisement branches.
+- Q2.2 allows multiple answers.
+- The follow-up usage question uses Carry Forward with Selected Choices.
+- Preview testing confirms that only selected platforms appear in the follow-up matrix.
+- The three additional questionnaire improvements have been implemented and documented with screenshots.
+
+# Appendix
+
+## Required URL 1
+
+**GitHub Repository:** [PASTE YOUR GITHUB REPOSITORY URL HERE]
+
+## Required URL 2
+
+**GitHub Pages / Published HTML:** [PASTE YOUR GITHUB PAGES URL HERE]
